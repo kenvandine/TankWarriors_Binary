@@ -1,8 +1,5 @@
 name: tank-warriors
-adopt-info: meta
-summary: Driving, shooting, explosions, and programming - all in one game
-description: |
-  Driving, shooting, explosions, and programming - all in one game
+adopt-info: tank-warriors
 base: core22
 architectures:
 - amd64
@@ -13,8 +10,9 @@ apps:
   tank-warriors:
     extensions: [gnome]
     command: tankwarriors/tankwarriors.x86_64
+    common-id: com.endlessnetwork.tankwarriors
     environment:
-      LD_LIBRARY_PATH: "$SNAP/tankwarriors/tankwarriors_data/Plugins/x86_64:$LD_LIBRARY_PATH"
+      LD_LIBRARY_PATH: $SNAP/tankwarriors/tankwarriors_Data/Plugins/x86_64:$SNAP/tankwarriors/tankwarriors_Data/Mono/x86_64:$LD_LIBRARY_PATH
     plugs:
       - audio-playback
       - desktop
@@ -26,15 +24,10 @@ apps:
       - x11
 
 parts:
-  meta:
-    plugin: nil
-    override-build: |
-      craftctl default
-      craftctl set version="$(curl https://api.github.com/repos/endless-network/TankWarriors_Binary/releases/latest | grep '"tag_name":' | grep -oE "([0-9]+\.[0-9]+)").0"
-
   tank-warriors:
-    source: .
     plugin: nil
+    source: https://github.com/endless-network/TankWarriors_Binary.git
+    parse-info: [com.endlessnetwork.tankwarriors.appdata.xml]
     build-packages:
       - unzip
       - wget
@@ -45,6 +38,6 @@ parts:
       unzip tankwarriors.zip -d temp
       mkdir -p $CRAFT_PART_INSTALL/tankwarriors
       cp temp/*/*.x86_64 $CRAFT_PART_INSTALL/tankwarriors/tankwarriors.x86_64
-      cp -r temp/*/*_Data $CRAFT_PART_INSTALL/tankwarriors/tankwarriors_data
+      cp -r temp/*/*_Data $CRAFT_PART_INSTALL/tankwarriors/tankwarriors_Data
       chmod +x $CRAFT_PART_INSTALL/tankwarriors/tankwarriors.x86_64
       cp -r TW_Favicon_* $CRAFT_PART_INSTALL/tankwarriors
