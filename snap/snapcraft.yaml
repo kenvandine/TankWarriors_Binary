@@ -25,7 +25,7 @@ apps:
 
 parts:
   tank-warriors:
-    plugin: nil
+    plugin: dump
     source: https://github.com/endless-network/TankWarriors_Binary.git
     parse-info: [com.endlessnetwork.tankwarriors.appdata.xml]
     build-packages:
