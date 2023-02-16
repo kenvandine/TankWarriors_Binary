@@ -15,29 +15,32 @@ apps:
       LD_LIBRARY_PATH: $SNAP/tankwarriors/tankwarriors_Data/Plugins/x86_64:$SNAP/tankwarriors/tankwarriors_Data/Mono/x86_64:$LD_LIBRARY_PATH
     plugs:
       - audio-playback
-      - desktop
-      - desktop-legacy
       - joystick
       - network
-      - opengl
-      - wayland
-      - x11
 
 parts:
   tank-warriors:
-    plugin: dump
+    plugin: nil
     source: https://github.com/endless-network/TankWarriors_Binary.git
     parse-info: [com.endlessnetwork.tankwarriors.appdata.xml]
     build-packages:
       - unzip
       - wget
       - jq
-    override-build: |
+    override-pull: |
       craftctl default
       curl https://api.github.com/repos/endless-network/TankWarriors_Binary/releases/latest | jq -r ".assets[0].browser_download_url" | xargs wget -O tankwarriors.zip
       unzip tankwarriors.zip -d temp
+    override-build: |
+      craftctl default
+      # Grab latest release
       mkdir -p $CRAFT_PART_INSTALL/tankwarriors
       cp temp/*/*.x86_64 $CRAFT_PART_INSTALL/tankwarriors/tankwarriors.x86_64
       cp -r temp/*/*_Data $CRAFT_PART_INSTALL/tankwarriors/tankwarriors_Data
       chmod +x $CRAFT_PART_INSTALL/tankwarriors/tankwarriors.x86_64
-      cp -r TW_Favicon_* $CRAFT_PART_INSTALL/tankwarriors
+      # Metadata
+      sed -i 's|Icon=com.endlessnetwork.tankwarriors$|Icon=${SNAP}/meta/gui/icon.png|g' com.endlessnetwork.tankwarriors.desktop
+      sed -i 's|Exec=com.endlessnetwork.tankwarriors.sh$|Exec=tank-warriors|g' com.endlessnetwork.tankwarriors.desktop
+      mkdir -p $CRAFT_PART_INSTALL/meta/gui
+      cp TW_Favicon_256x256.png $CRAFT_PART_INSTALL/meta/gui/icon.png
+      cp com.endlessnetwork.tankwarriors.desktop $CRAFT_PART_INSTALL/meta/gui/
