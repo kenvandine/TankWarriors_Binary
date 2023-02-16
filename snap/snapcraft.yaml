@@ -44,3 +44,4 @@ parts:
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
       cp TW_Favicon_256x256.png $CRAFT_PART_INSTALL/meta/gui/icon.png
       cp com.endlessnetwork.tankwarriors.desktop $CRAFT_PART_INSTALL/meta/gui/
+      cp LICENSE $CRAFT_PART_INSTALL
