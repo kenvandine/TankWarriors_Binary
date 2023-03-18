@@ -6,7 +6,7 @@ architectures:
 confinement: strict
 grade: stable
 issues: https://github.com/kenvandine/TankWarriors_Binary/issues
-contact: https://github.com/kenvandine/TankWarriors_Binary/issues
+contact: https://endlessstudios.com/
 
 apps:
   tank-warriors:
